@@ -14,13 +14,15 @@
     <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
 </head>
 
 <body>
 
     <div class="container">
         <div class="jumbotron bg-dark text-white">
-            <h1 class="text-center">I Like Trains. Trains are Cool.</h1>
+            <h1 class="text-center">TrainScape</h1>
             <p class="lead text-center">Choo chooo</p>
             <hr class="my-4">
         </div>
@@ -71,7 +73,7 @@
                         <label for="monthly-rate">Frequency (min)</label>
                         <input type="text" class="form-control" id="frequency-entry" placeholder="">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
@@ -80,7 +82,9 @@
     </div>
 
 
-    <script src="timesheetLogic.js"></script>
+    <script src="assets/javascript/app.js"></script>
+
+
 </body>
 
 </html>
