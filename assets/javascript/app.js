@@ -21,7 +21,8 @@ $("#submit").on("click", function (event) {
     // Grabs user input
     var trainName = $("#train-name-entry").val().trim();
     var trainDestination = $("#destination-entry").val().trim();
-    var trainFirst = moment($("#first-train-entry").val().trim(), "hh:mm").format("X");
+    // var trainFirst = moment($("#first-train-entry").val().trim(), "HH:mm").format("HH:mm");
+    var trainFirst = $("#first-train-entry").val().trim();
     var trainFreq = $("#frequency-entry").val().trim();
 
     // Creates local "temporary" object for holding employee data
@@ -60,6 +61,7 @@ database.ref().on("child_added", function (childSnapshot) {
     var trainDestination = childSnapshot.val().destination;
     var trainFirst = childSnapshot.val().start;
     var trainFreq = childSnapshot.val().freq;
+    console.log("first train left at: " + trainFirst);
 
     // Employee Info
     console.log(trainName + "train name added to db!");
@@ -73,16 +75,17 @@ database.ref().on("child_added", function (childSnapshot) {
     // calculate next arrival
     // Current Time
     var currentTime = moment();
-    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
     // first train time (user input)
-    var firstTrainTime = $("#first-train-entry").val().trim();
-    console.log("first train time is: " + firstTrainTime);
+    // var firstTrainTime = $("#first-train-entry").val().trim(); this is just trainFirst, i already have
+    console.log("first train time is: " + trainFirst);
     //now calculate the difference between their first train time, and the current time
     //this will tell you how long the train has been traveling for so far today
     //we'll call that amount of time timeTraveled. now do timeTraveled%frequency
     //to get number of minutes unntil arrival
     // Difference between the times
-    var timeTraveled = moment().diff(moment(firstTrainTime, "X"), "minutes");
+    // var timeTraveled = moment().diff(moment(firstTrainTime, "HH:mm"), "minutes");
+    var timeTraveled = moment().diff(moment(trainFirst, "HH:mm"), "minutes");
     console.log("time traveled so far today: " + timeTraveled);
     // Time apart (remainder)
     var tRemainder = timeTraveled % trainFreq;
@@ -92,8 +95,8 @@ database.ref().on("child_added", function (childSnapshot) {
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
     // Next Train
 
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes").format("HH:mm a");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
     //
     // var nextArrival = moment.unix(nextTrain).format("hh:mm");
     // console.log(nextArrival);
