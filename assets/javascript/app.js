@@ -39,7 +39,48 @@ $("#submit").on("click", function (event) {
     console.log(newTrain.name);
     console.log(newTrain.destination);
     console.log(newTrain.start);
-    console.log(newTrain.frew);
+    console.log(newTrain.freq);
+
+
+    //do the math stuff here?
+    //--------------------------------------------------------------------------------
+    // calculate next arrival
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+    // first train time (user input)
+    var firstTrainTime = $("#first-train-entry").val().trim();
+    //now calculate the difference between their first train time, and the current time
+    //this will tell you how long the train has been traveling for so far today
+    //we'll call that amount of time timeTraveled. now do timeTraveled%frequency
+    //to get number of minutes unntil arrival
+    // Difference between the times
+    var timeTraveled = moment().diff(moment(firstTrainTime), "minutes");
+    console.log("DIFFERENCE IN TIME: " + timeTraveled);
+    // Time apart (remainder)
+    var tRemainder = timeTraveled % trainFreq;
+    console.log(tRemainder);
+    // Minute Until Train
+    var tMinutesTillTrain = trainFreq - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+    //
+    var nextArrival = moment.unix(trainFirst).format("hh:mm");
+    console.log(nextArrival);
+
+    // Calculate minutes away!
+    var minutesAway = moment().diff(moment(trainFirst, "X"), "months");
+    console.log(minutesAway);
+
+
+
+
+
+
+
+
 
     console.log("Train successfully added");
 
@@ -67,29 +108,16 @@ database.ref().on("child_added", function (childSnapshot) {
     console.log(trainFirst + "first train time added to db!");
     console.log(trainFreq + "train frequency added to db!");
 
-    // Prettify the train start
-    var trainStartPretty = moment.unix(trainFirst).format("hh:mm");
-
-    // Calculate the months worked using hardcore math
-    // To calculate the months worked
-    //calculate all my needed results here!!!
-    var nextArrive = moment().diff(moment(trainFirst, "X"), "months");
-    console.log(nextArrive);
-
-    // Calculate the total billed rate
-    // var empBilled = empMonths * empRate;
-    // console.log(empBilled);
 
     // Create the new row
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(trainDestination),
-        $("<td>").text(trainStartPretty),
-        $("<td>").text(empMonths),
-        $("<td>").text(empRate),
-        $("<td>").text(empBilled)
+        $("<td>").text(trainFreq),
+        $("<td>").text(nextArrival),
+        $("<td>").text(minutesAway)
     );
 
     // Append the new row to the table
-    $("#employee-table > tbody").append(newRow);
+    $("#train-table > tbody").append(newRow);
 });
